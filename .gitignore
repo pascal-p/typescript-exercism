@@ -1,0 +1,14 @@
+*.org*
+*~
+*.html
+script.js
+an_script.js
+
+npm-debug.log
+node_modules/*
+*/node_modules
+
+.eslintrc
+.eslintignore
+.npmrc
+*/.exercism
