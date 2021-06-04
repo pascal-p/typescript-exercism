@@ -1,21 +1,18 @@
-// const PUNCTUATION = [':', ';', '\\\?', '!', ',', '\\\.'];
-
 class Words {
-    // expr = PUNCTUATION.map((s) => s + '|').join('').replace(/\|$/, '');
-    // punctRE: RegExp = new RegExp(this.expr, 'g');
     allSpacesRE: RegExp = /(\t|\n|\s|_)+/g;
 
-    constructor() { }
+    // implicit default constructor is enough
+    // constructor() { }
 
     count(word: string): Map<string, number> {
-        let str = word.replace(this.allSpacesRE, ' ').trim();
+        let str: string = word.replace(this.allSpacesRE, ' ').trim();
 
-        // const updateFn = (wc: Map<string, number>, w: string) => wc.set(w, wc.get(w) === undefined ? 1 : wc.get(w) + 1);
-        const updateFn = (wc: any, w: string) => wc.set(w, wc.get(w) === undefined ? 1 : wc.get(w) + 1);
+        const updateFn = (wc: Map<string, number>, w: string) => wc.set(w, (wc.get(w) || 0) + 1);
 
         return str.split(' ').reduce(
             (wc, word) => {
-                if (word.match(/^[\w:;\?!.\.&@%\^\$]+$/i)) {          // no single-quote
+                // cf. https://javascript.info/regexp-unicode => Unicode support
+                if (word.match(/^[\p{L}\p{P}:;\?!.\.&@%\^\$]+$/gu)) {  // no single-quote
                     updateFn(wc, word.toLowerCase());
                 }
                 else if (word.startsWith("'") && word.endsWith("'")) {
@@ -26,7 +23,7 @@ class Words {
                 }
                 return wc;
             },
-            new Map() // {}
+            new Map()
         );
     }
 }

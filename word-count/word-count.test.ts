@@ -48,7 +48,7 @@ describe('words()', () => {
         expect(words.count('go Go GO')).toEqual(expectedCounts)
     })
 
-    xit('counts properly international characters', () => {
+    it('counts properly international characters', () => {
         const expectedCounts = new Map(
             Object.entries({ '¡hola!': 1, '¿qué': 1, 'tal?': 1, 'привет!': 1 })
         )
