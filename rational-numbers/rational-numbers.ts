@@ -1,5 +1,3 @@
-
-
 interface IRational {
   _num: number;
   _den: number;
@@ -57,21 +55,37 @@ class Rational implements IRational {
 
   mul(r: Rational): Rational {
     r = Rational.checkArg(r);
-    return this;
+    return new Rational(this._num * r._num, this._den * r._den);
   }
 
   div(r: Rational): Rational {
     r = Rational.checkArg(r);
-    return this;
+    return new Rational(this._num * r._den, this._den * r._num);
   }
 
   exprational(n: number): Rational {
-    console.log(n);
-    return this;
+    if (n === undefined ||
+      (typeof n) !== 'number' ||
+      Math.floor(n) !== n) { throw new Error("NaN or Not an Integer"); }
+
+    if (n >= 0) {
+      return new Rational(this._num ** n, this._den ** n);
+    }
+    else {
+      n = Math.abs(n);
+      return new Rational(this._den ** n, this._num ** n);
+    }
   }
 
-  expreal(n: number): number {
-    return n;
+  expreal(n: number, eps = 1e-12): number {
+    if (n === undefined ||
+      (typeof n) !== 'number') { throw new Error("NaN"); }
+
+    const res = n ** (this._num / this._den);
+    if (Math.abs(Math.ceil(Math.abs(res)) - Math.abs(res)) <= eps) {
+      return Math.ceil(res);
+    }
+    return res;
   }
 
   reduce(): Rational {
@@ -131,7 +145,7 @@ class Rational implements IRational {
     target: Either the constructor function of the class for a static member, or the prototype of the class for an instance member.
     propertyKey: The name of the property.
     descriptor: The property descriptor for the member;
-  
+
   @Returns:
     If returns a value, it will be used as the descriptor of the member.
  */
