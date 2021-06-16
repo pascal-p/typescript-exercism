@@ -78,10 +78,46 @@ describe('Word Problem', () => {
     expect(new WordProblem(question).answer()).toEqual(148877)
   })
 
+  it('no longer too advanced/2', () => {
+    const question = 'What is 53 logarithm?'
+    expect(new WordProblem(question).answer()).toEqual(3.970291913552122)
+  })
+
   it('irrelevant', () => {
     const question = 'Who is the president of the United States?'
     const problem = new WordProblem(question)
 
     expect(problem.answer.bind(problem)).toThrowError(ArgumentError)
   })
+
+  it('2 raised to the 5th power', () => {
+    const question = 'What is 2 raised to the 5th power?'
+    expect(new WordProblem(question).answer()).toEqual(32)
+  })
+
+  it('2 raised to the 16th power', () => {
+    const question = 'What is 2 raised to the 16th power?'
+    expect(new WordProblem(question).answer()).toEqual(65536)
+  })
+
+  it('2 raised to the 0th power', () => {
+    const question = 'What is 2 raised to the 0th power?'
+    expect(new WordProblem(question).answer()).toEqual(1)
+  })
+
+  it('2 raised to the -1th power', () => {
+    const question = 'What is 2 raised to the -1th power?'
+    expect(new WordProblem(question).answer()).toEqual(0.5)
+  })
+
+  it('5 raised to the 3rd power', () => {
+    const question = 'What is 5 raised to the 3rd power?'
+    expect(new WordProblem(question).answer()).toEqual(125)
+  })
+
+  it('3 plus 2 raised to the 16th power', () => {
+    const question = 'What is 3 plus 2 raised to the 16th power?'
+    expect(new WordProblem(question).answer()).toEqual(152587890625)
+  })
+
 })

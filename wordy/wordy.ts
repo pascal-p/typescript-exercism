@@ -1,5 +1,15 @@
+/*
+  Extension: we will admit question of the following form:
+  - What is 2 raised to the 5th power? 32
+  - What is 5 raised to the 2nd power? 25
+  - What is 5 raised to the 0th power? 1
+  - What is 5 raised to the 3rd power? 125
+  - What is 2 raised to the 16th power? 65536
+  - What is 3 plus 2 raised to the 16th power?  5**16 == 152587890625
+ */
+
 export class WordProblem {
-  static readonly BinaryOps = ['plus', 'minus', 'divided', 'multiplied'];
+  static readonly BinaryOps = ['plus', 'minus', 'divided', 'multiplied', 'raised'];
   static readonly UnaryOps = ['squared', 'cubed', 'logarithm'];
 
   _question: string
@@ -18,7 +28,7 @@ export class WordProblem {
 
   answer() {
     if (typeof this._answer === 'undefined') {
-      throw new ArgumentError(); // Error('Argument Error')
+      throw new ArgumentError();
     }
     return this._answer;
   }
@@ -70,8 +80,12 @@ export class WordProblem {
       const v: number = operand_stack.pop() || 1;
       operand_stack[0] /= v >> 0;
     }
+    else if (operator === 'raised') {
+      const v: number = operand_stack.pop() || 0; // careful with falsey...
+      operand_stack[0] **= v;
+    }
     else {
-      throw new ArgumentError();  // Error('Operator not yet supported')
+      throw new ArgumentError();
     }
   }
 
