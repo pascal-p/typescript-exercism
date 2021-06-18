@@ -7,26 +7,12 @@ class Prime {
     }
 
     const m = Prime._primes.length;
-
-    if (n <= m) {
-      return Prime._primes[n - 1];
-    }
-
+    if (n <= m) return Prime._primes[n - 1];
     //
-    // How abundant are primes numbers?
-    // as we increase the index we find less and less primes...
+    // using The prime number theorem
     //
-    // Given n what should be the limit if we use Eratosthenes sieve to extend the primes
-    // is a 10x, 100x... as n increase?
-    // cf. nth -> where I am taking a 10x factor (< g digits number) and ...
-    //
-    //
-    // 
-
-    // extend, then return value at given index
-    const j = String(n).length;
-    const e = j < 6 ? 10 ** (j + 1) : 10 ** (j + 2);
-    // console.log(`Extension by factor ${e} called...`);
+    const e = Math.ceil(n * Math.log(n) * 1.2); // 20% error is this enough, can we do better
+    //                                          // as n increases error decreases!
     this.extendPrimes(e);
     return Prime._primes[n - 1];
   }
@@ -55,7 +41,7 @@ class Prime {
       this.mergePrimes(lastPrime, m, candidatePrimes);
     }
     else {
-      // ok we know the limit:  Math.floor(Math.sqrt(lastPrime + 2 * m))
+      // ok we know the limit: Math.floor(Math.sqrt(lastPrime + 2 * m))
       for (let ix = 0; ix < n; ix++) {
         if (candidatePrimes[ix]) {
           const p = lastPrime + 2 * (ix + 1);
