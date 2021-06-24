@@ -54,22 +54,12 @@ class Crypto {
     // (alt) 2 - transpose segments - return transposition
     //
     const segments = this.plaintextSegments();
-    let encodedMsg: string[] = [];
-    for (let ix = 0; ix < this._ncols; ix++) {
-      const encodeStr = segments.map(s => s[ix]).join('');
-      encodedMsg.push(encodeStr.trimEnd());
-    }
-    return encodedMsg.join('');
+    return this._encode(segments, this._ncols);
   }
 
-  decode(cipheredText: string): string { // without spaces!
+  decodetext(cipheredText: string): string { // without spaces!
     const [segments, nrows] = this._cipheredSegments(cipheredText);
-    let decodedMsg: string[] = [];
-    for (let ix = 0; ix < nrows; ix++) {
-      const decodeStr = segments.map((s: string) => s[ix]).join('');
-      decodedMsg.push(decodeStr.trimEnd());
-    }
-    return decodedMsg.join('');
+    return this._encode(segments, nrows)
   }
 
   private _normalizePlaintext(msg: string) {
@@ -100,13 +90,22 @@ class Crypto {
       }
       else {
         segments.push(cipheredText.slice(ix, ix + nrows - 1).padEnd(nrows, ' '));
-        shift = 1;
+        shift = 1; // not a perfect rectangle => padding required + shift
       }
       jx++;
     }
     return [segments, nrows];
   }
 
+  private _encode(segments: string[], nchunks: number) {
+    let encodedMsg: string[] = [];
+
+    for (let ix = 0; ix < nchunks; ix++) {
+      const encodeStr = segments.map(s => s[ix]).join('');
+      encodedMsg.push(encodeStr.trimEnd());
+    }
+    return encodedMsg.join('');
+  }
 }
 
 export default Crypto

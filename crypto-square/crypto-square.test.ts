@@ -93,18 +93,18 @@ describe('Crypto', () => {
   // decoding
   it('decipher text/1', () => {
     const crypto = new Crypto('');
-    expect(crypto.decode('imtgdvsfearwermayoogoanouuiontnnlvtwttddesaohghnsseoau'))
+    expect(crypto.decodetext('imtgdvsfearwermayoogoanouuiontnnlvtwttddesaohghnsseoau'))
       .toEqual('if man was meant to stay on the ground god would have given us roots'.replace(/\s+/g, ''))
   })
 
   it('cipher text/2', () => {
     const crypto = new Crypto('');
-    expect(crypto.decode('wneiaweoreneawssciliprerlneoidktcms')).toEqual('we all know interspecies romance is weird'.replace(/\s+/g, ''))
+    expect(crypto.decodetext('wneiaweoreneawssciliprerlneoidktcms')).toEqual('we all know interspecies romance is weird'.replace(/\s+/g, ''))
   })
 
   it('cipher text/3', () => {
     const crypto = new Crypto('');
-    expect(crypto.decode('tasneyinicdsmiohooelntuillibsuuml')).toEqual('time is an illusion lunchtime doubly so'.replace(/\s+/g, ''))
+    expect(crypto.decodetext('tasneyinicdsmiohooelntuillibsuuml')).toEqual('time is an illusion lunchtime doubly so'.replace(/\s+/g, ''))
   })
 
 })
