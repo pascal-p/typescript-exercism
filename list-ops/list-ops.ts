@@ -116,7 +116,7 @@ class List<T> {
     return this.buffer.pop();
   }
 
-  every(predicate: any) {
+  every(predicate: any): boolean {
     return this.buffer.every(predicate)
   }
 

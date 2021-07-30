@@ -133,3 +133,32 @@ describe('flattening a list', () => {
     expect(list.flatten(2).values).toEqual([1, 2, 2, 4, 5])
   })
 })
+
+describe('Extension: list unique', () => {
+  it('empty list', () => {
+    const list = new List()
+    expect(list.unique().values).toEqual([])
+  })
+
+  it('non-empty list', () => {
+    const list = new List([1, 2, 2, 4, 1, 2, 5])
+    expect(list.unique().values).toEqual([1, 2, 4, 5])
+  })
+})
+
+describe('Extension: list every', () => {
+  it('empty list', () => {
+    const list = new List()
+    expect(list.every((x: any) => x)).toBeTruthy()
+  })
+
+  it('non-empty list/1', () => {
+    const list = new List([1, 2, 2, 4, 1, 2, 5])
+    expect(list.every((x: number) => x % 2 === 0)).toBeFalsy()
+  })
+
+  it('non-empty list/2', () => {
+    const list = new List([1, 5, 3, 7])
+    expect(list.every((x: number) => x % 2 === 1)).toBeTruthy()
+  })
+})
