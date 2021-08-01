@@ -80,6 +80,7 @@ describe('School', () => {
     const result = roster.get('2') || []
     result.push('Oops.')
     const expectedDb = new Map(Object.entries({ 2: ['Aimee'] }))
+
     expect(gradeSchool.studentRoster()).toEqual(expectedDb)
   })
 

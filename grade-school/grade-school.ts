@@ -1,9 +1,4 @@
-interface IStudent {
-  readonly name: string;
-  grade: number;
-}
-
-class Student implements IStudent {
+class Student {
   readonly name: string;
   grade: number;
 
@@ -18,26 +13,24 @@ class Student implements IStudent {
 
 class GradeSchool {
   students: Student[];
+  roster: Map<string, string[]>;
 
   constructor() {
     this.students = [];
+    this.roster = new Map<string, string[]>();
   }
 
   studentRoster(): Map<string, string[]> {
-    // build Map
-    let roster = new Map<string, string[]>();
-
-    for (const stud of this.students) {
-      const ix = String(stud.grade);
-      let lst = roster.get(ix) || [];
-      lst.push(stud.name);
-      roster.set(ix, lst);
-    }
-
-    // sort it
-    roster.forEach((v, k, map) => map.set(k, v.sort()));
-
-    return roster;
+    // make a deepcopy
+    let lst: any = [];
+    /*
+    this.roster.forEach((val, key) => {
+      const obj = Object.assign({}, { key: key, val: val })
+      lst.push([obj.key, [...obj.val]]);
+    });
+    */
+    this.roster.forEach((val, key) => lst.push([key, [...val]]));
+    return new Map<string, string[]>(lst);
   }
 
   addStudent(name: string, grade: number): void {
@@ -45,23 +38,41 @@ class GradeSchool {
       throw new Error(`invalid grade: ${grade} - must be >0`)
     }
 
-    const ix = this.students.findIndex(s => s.name === name);
+    let ix = this.students.findIndex(s => s.name === name);
     if (ix > - 1) {
-      // student already in list => update
-      this.students[ix].grade = grade
+      // update
+      this.updateRoster(name, grade, ix);
+      this.students[ix].grade = grade;
     }
     else {
       // create
       const student = new Student(name, grade);
       this.students.push(student);
+      ix = this.students.length - 1;
+      this.updateRoster(name, grade, ix);
     }
   }
 
   studentsInGrade(grade: number): string[] {
     if (grade <= 0) return [];
+    const str_gr = String(grade);
+    // copy
+    const lst = this.roster.get(str_gr) || [];
+    return [...lst];
+  }
 
-    const students = this.students.filter(s => s.grade === grade);
-    return students.length === 0 ? [] : students.map(s => s.name).sort();
+  private updateRoster(name: string, grade: number, ix: number): void {
+    const stu_gr = String(this.students[ix].grade);
+
+    let lst = this.roster.get(stu_gr) || [];
+    const nlst = lst.filter((n: string) => n !== name);
+    this.roster.set(stu_gr, nlst);
+
+    const stu_ngr = String(grade);
+    lst = this.roster.get(stu_ngr) || [];
+    lst.push(name)
+    lst.sort();
+    this.roster.set(stu_ngr, lst);
   }
 }
 
