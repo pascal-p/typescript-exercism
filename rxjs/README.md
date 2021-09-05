@@ -1,9 +1,10 @@
 ## RxJs
 
-  - Lesson1 - Observables
-  - Lesson2 - Subjects
+  - Lesson 1 - Observables
+  - Lesson 2 - Subjects
+  - Lesson 3 - Subscriptions
   
-#### Lesson 1
+#### Lesson 1 - Observables
 
   - What is an __Observable__? (my take)
     * From RxJs doc. _An observable is a representation of any set of values over an arbitrary amount of tinme_.
@@ -22,7 +23,7 @@
     * An __Observable__ is "lazy by design" and won't start its work (emitting/streaming "events") until "something" (subscriber or observer) subscribe to it.
 
 
-#### Lesson 2
+#### Lesson 2 - Subjects
 
 A `RxJs Subject` is a type of Observable which allows multicasting. A "vanilla" Observable is unicast by design.  
   + Unicast: each (subscribed) Observer owns an independent execution of the Observable (no sharing).
@@ -89,6 +90,14 @@ describe('AsyncSubject', () => {
 });
 ```
 
+#### Lesson 3 - Subscriptions
+
+A _subscription_ usually represents an execution of an Observable. It is the access to the disposable resource or async task. The subscription is returned from the `subscribe()` method call, which is primarily useful to unsubscribe.  
+Unsubscribing invokes the Observalde's `teardown` logic which cleans up and frees up resources.
+
+Check [this for examples](https://github.com/pascal-p/typescript-exercism/blob/rxjs-p1-br/rxjs/src/rxjs-03-subscriptions.ts).
+
+
 ### Requirements
 
 Install project dependencies:
@@ -113,13 +122,19 @@ Once you get a test passing, you can enable the next one by changing `xit` to
 ### Source
   The series [RxJs in 73 lessons - by  Ronnie Schaniel](https://ronnieschaniel.com/open-source/)
 
-  - for lesson 1:
+  - for lesson 1:  
     [RxJs in 73 Lessons – #2 Observables](https://ronnieschaniel.com/rxjs/rxjs-lesson-observables/)
     [source](https://github.com/rschaniel/rxjs_in_x_lessons/tree/main/src/2_observable)
 
-  - for lesson 2:
+  - for lesson 2:  
     [RxJs in 73 Lessons – #3 Subjects](https://ronnieschaniel.com/rxjs/rxjs-lesson-subjects/)
     [source](https://github.com/rschaniel/rxjs_in_x_lessons/tree/main/src/3_subjects)
+    
+  - for lesson 3:  
+    [RxJs in 73 Lessons – #4 Subscription](https://ronnieschaniel.com/rxjs/rxjs-in-lessons-subscription-and-scheduler/)
+
+
+
 
 <hr />
 <p><sub><em>Sep. 2021 Corto Inc</sub></em></p>
