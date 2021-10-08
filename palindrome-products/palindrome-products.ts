@@ -8,13 +8,13 @@ type Factors = {
   maxFactor: number
 }
 
-const generate = ({ minFactor, maxFactor }: Factors): PalObj => {
+export const generate = ({ minFactor, maxFactor }: Factors): PalObj => {
   if (typeof minFactor === 'undefined') {
     minFactor = 1;
   }
 
   if (minFactor > maxFactor) {
-    throw new Error('minFactor must be <= maxFactor');
+    throw new Error('min must be <= max');
   }
 
   const [prodMap, palProd] = genProducts(minFactor, maxFactor);
@@ -73,5 +73,3 @@ const isPalindrome = (p: number): boolean => {
   }
   return flag;
 }
-
-export default generate;

@@ -1,9 +1,15 @@
 class Hamming {
 
   public compute(s1: string, s2: string): number {
-    if (s1.length === 0 && s2.length > 0) { throw new Error('left strand must not be empty.'); };
-    if (s1.length > 0 && s2.length === 0) { throw new Error('right strand must not be empty.'); };
-    if (s1.length !== s2.length) { throw new Error('DNA strands must be of equal length.'); };
+    if (s1.length === 0 && s2.length > 0) {
+      throw new Error('left strand must not be empty.');
+    };
+    if (s1.length > 0 && s2.length === 0) {
+      throw new Error('right strand must not be empty.');
+    };
+    if (s1.length !== s2.length) {
+      throw new Error('DNA strands must be of equal length.');
+    };
 
     if (s1.length === 0) { return 0; };
 
