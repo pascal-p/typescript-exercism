@@ -94,7 +94,11 @@ describe('Division', () => {
 
   it('Divide a rational number by 1', () => {
     const expected = new Rational(1, 2)
-    expect(new Rational(1, 2).div(new Rational(1, 1))).toEqual(expected)
+    expect(new Rational(1, 2).div(new Rational(1))).toEqual(expected)
+  })
+
+  it('Divide a rational number by 0 is a recipe for disaster', () => {
+    expect(() => (new Rational(1, 2).div(new Rational(0)))).toThrow(Error)
   })
 })
 

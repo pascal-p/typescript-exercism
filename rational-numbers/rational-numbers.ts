@@ -1,7 +1,4 @@
 interface IRational {
-  _num: number;
-  _den: number;
-
   abs(): Rational
   add(r: Rational): Rational
   sub(r: Rational): Rational
@@ -12,10 +9,10 @@ interface IRational {
 }
 
 class Rational implements IRational {
-  _num: number;
-  _den: number;
+  private _num: number;
+  private _den: number;
 
-  constructor(num: number, den: number) {
+  constructor(num: number, den: number = 1) {
     if (den === 0) { throw new Error(`Denominator cannot be 0 (num: ${num}, den: ${den}`) }
 
     if (num === den) {
@@ -42,24 +39,23 @@ class Rational implements IRational {
     return new Rational(Math.abs(this._num), Math.abs(this._den));
   }
 
-  // @checkArg
+  @checkArg
   add(r: Rational): Rational {
-    r = Rational.checkArg(r);
     return new Rational(this._num * r._den + r._num * this._den, this._den * r._den);
   }
 
+  @checkArg
   sub(r: Rational): Rational {
-    r = Rational.checkArg(r);
     return new Rational(this._num * r._den - r._num * this._den, this._den * r._den);
   }
 
+  @checkArg
   mul(r: Rational): Rational {
-    r = Rational.checkArg(r);
     return new Rational(this._num * r._num, this._den * r._den);
   }
 
+  @checkArg
   div(r: Rational): Rational {
-    r = Rational.checkArg(r);
     return new Rational(this._num * r._den, this._den * r._num);
   }
 
@@ -92,8 +88,9 @@ class Rational implements IRational {
     return this;  // identity
   }
 
+  //
   // Helpers
-
+  //
   private static divByGcd(num: number, den: number): number[] {
     let r = Rational.gcd(num, den);
     return [num / r, den / r];
@@ -112,23 +109,7 @@ class Rational implements IRational {
 
     return r === 0 ? num : r;
   }
-
-  private static checkArg(r: Rational | number) {
-    if (r === undefined) { throw new Error("NaN"); }
-
-    if (r instanceof Rational) {
-      return r;
-    }
-    else if ((typeof r) === 'number' && Math.floor(r) === r) {
-      // we want an integer, not a real
-      return new Rational(r, 1);
-    }
-    else {
-      throw new Error("NaN");
-    }
-  }
 }
-
 
 /*
   Method Decorators
@@ -160,7 +141,6 @@ function checkArg(_target: any, _propertyKey: string, descriptor: PropertyDescri
     if (r === undefined) { throw new Error("NaN"); }
 
     if (r instanceof Rational) {
-      // return r;
       return original.call(this, ...args);
     }
     else if ((typeof r) === 'number' && Math.floor(r) === r) {
@@ -170,11 +150,7 @@ function checkArg(_target: any, _propertyKey: string, descriptor: PropertyDescri
     else {
       throw new Error("NaN");
     }
-    // const result = original.call(this, ...args);
-    // console.log('result: ', result);
-    // return result;
   }
 }
-
 
 export default Rational;
