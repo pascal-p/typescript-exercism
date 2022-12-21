@@ -148,17 +148,44 @@ describe('Extension: list unique', () => {
 
 describe('Extension: list every', () => {
   it('empty list', () => {
-    const list = new List()
-    expect(list.every((x: any) => x)).toBeTruthy()
+    const list = new List<unknown>()
+    expect(list.every((x: unknown) => !!x)).toBeTruthy()
   })
 
   it('non-empty list/1', () => {
-    const list = new List([1, 2, 2, 4, 1, 2, 5])
+    const list = new List<number>([1, 2, 2, 4, 1, 2, 5])
     expect(list.every((x: number) => x % 2 === 0)).toBeFalsy()
   })
 
   it('non-empty list/2', () => {
-    const list = new List([1, 5, 3, 7])
+    const list = new List<number>([1, 5, 3, 7])
     expect(list.every((x: number) => x % 2 === 1)).toBeTruthy()
+  })
+
+  it('non-empty list/2', () => {
+    const list = new List<string>(['aaa', 'bbb', 'cccc', 'ddddd'])
+    expect(list.every((s: string) => s.length >= 3)).toBeTruthy()
+  })
+})
+
+describe('Extension: list some', () => {
+  it('empty list', () => {
+    const list = new List<unknown>()
+    expect(list.some((x: unknown) => !!x)).toBeFalsy()
+  })
+
+  it('non-empty list/1', () => {
+    const list = new List<number>([1, 2, 2, 4, 1, 2, 5])
+    expect(list.some((x: number) => x % 2 === 0)).toBeTruthy()
+  })
+
+  it('non-empty list/2', () => {
+    const list = new List<number>([1, 5, 3, 7])
+    expect(list.some((x: number) => x % 2 === 0)).toBeFalsy()
+  })
+
+  it('non-empty list/2', () => {
+    const list = new List<string>(['aaa', 'bb', 'cc', 'dddd'])
+    expect(list.some((s: string) => s.length >= 3)).toBeTruthy()
   })
 })

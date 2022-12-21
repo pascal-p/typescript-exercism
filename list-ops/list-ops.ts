@@ -5,22 +5,21 @@ class List<T> {
     // make a copy...
     if (typeof arg === 'undefined') {
       this.buffer = [];
+      return
     }
-    else if (this.isList(arg)) {
+
+    if (this.isList(arg)) {
       this.buffer = [...arg.buffer];
+      return
     }
-    else if (Array.isArray(arg)) {
-      if (arg.length === 1) {
-        this.buffer = [...arg];
-      }
-      else {
-        this.buffer = [];
-        this.concat(...arg);
-      }
+
+    if (Array.isArray(arg)) {
+      this.buffer = (arg.length === 1) ?
+        [...arg] : arg.reduce((b, a) => b = [...b, ...(this.isList(a) ? a.buffer : [a])], []);
+      return
     }
-    else {
-      throw new Error('Type not yet managed or incompatible');
-    }
+
+    throw new Error('Type not yet managed or incompatible');
   }
 
   get values(): T[] {
@@ -33,18 +32,18 @@ class List<T> {
     /*
      * given two lists, add all items in the second list to the end of the first list
      */
-    this.buffer = list.buffer.reduce((clist, item) => [...clist, item],
-      this.buffer);
+    this.buffer = list.buffer.reduce((clist, item) => [...clist, item], this.buffer);
     return this;
   }
 
   concat(...lists: Array<List<T>>) {
-    // given a series of lists, combine all items in all lists into one flattened list)
-    let buf: any = this.buffer || [];
-    for (const l of lists) {
-      buf = [...buf, ...(this.isList(l) ? l.buffer : [l])]
-    }
-    this.buffer = buf;
+    /*
+     * given a series of lists, combine all items in all lists into one flattened list)
+     */
+    this.buffer = lists.reduce((buf: T[], cl) => {
+      buf = [...buf, ...(this.isList(cl) ? cl.buffer : [cl])] as T[];
+      return buf;
+    }, this.buffer);
     return this;
   }
 
@@ -94,33 +93,36 @@ class List<T> {
     return list.hasOwnProperty('buffer');
   }
 
-
   //
   // Extensions
   //
 
-  flatten(depth = 1) {
+  flatten(depth = 1): List<T> {
     // creates a new list with all sub-list elements concatenated into it recursively up to the specified depth.
     if (typeof depth === 'undefined') { depth = 1; }
     const buf = this.buffer.flat(depth);
     return new List(buf);
   }
 
-  push(x: any) {
+  push(x: any): List<T> {
     this.buffer.push(x)
     return this;
   }
 
-  pop() {
+  pop(): T | undefined {
     if (this.isEmpty()) { return undefined; }
     return this.buffer.pop();
   }
 
-  every(predicate: any): boolean {
-    return this.buffer.every(predicate)
+  every(predicateFn: (args: T) => boolean): boolean {
+    return this.buffer.every(predicateFn)
   }
 
-  unique() {
+  some(predicateFn: (args: T) => boolean): boolean {
+    return this.buffer.some(predicateFn)
+  }
+
+  unique(): List<T> {
     const buf = this.buffer.reduce((cl: any, elt) => cl.indexOf(elt) === -1 ? [...cl, elt] : cl, [])
     return new List(buf);
   }
