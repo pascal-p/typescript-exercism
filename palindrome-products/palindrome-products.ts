@@ -1,12 +1,14 @@
 type PalObj = {
-  largest: { value: any, factors: number[][] };
-  smallest: { value: any, factors: number[][] }
+  largest: { value: number | null, factors: number[][] };
+  smallest: { value: number | null, factors: number[][] }
 };
 
 type Factors = {
   minFactor?: number | undefined;
   maxFactor: number
 }
+
+type Pair = [Map<number, number[][]>, number[]]
 
 export const generate = ({ minFactor, maxFactor }: Factors): PalObj => {
   if (typeof minFactor === 'undefined') {
@@ -27,7 +29,7 @@ export const generate = ({ minFactor, maxFactor }: Factors): PalObj => {
   return selectMinMax(prodMap, palProd);
 }
 
-const genProducts = (min_: number, max_: number): any[] => {
+const genProducts = (min_: number, max_: number): Pair => {
   let prodMap: Map<number, number[][]> = new Map()
   let palProd: number[] = [];
 
@@ -37,7 +39,7 @@ const genProducts = (min_: number, max_: number): any[] => {
       if (!isPalindrome(p)) continue;
 
       if (prodMap.has(p)) {
-        let a: number[][] = prodMap.get(p) || [];
+        const a: number[][] = prodMap.get(p) || [];
         a.push([ix, jx]);
         prodMap.set(p, a);
       }
@@ -60,13 +62,12 @@ const selectMinMax = (prodMap: Map<number, number[][]>, palProd: number[]): PalO
     smallest: { value: min_, factors: prodMap.get(min_) || [[]] },
     largest: { value: max_, factors: prodMap.get(max_) || [[]] }
   }
-
   return resObj;
 }
 
 const isPalindrome = (p: number): boolean => {
   const sp = String(p);
-  let flag = true;
+  const flag = true;
   const n = sp.length;
   for (let ix = 0; ix < n / 2 >> 0; ix++) { // note integer div.
     if (sp[ix] != sp[n - 1 - ix]) return false;
