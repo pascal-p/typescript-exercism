@@ -40,14 +40,14 @@ class List<T> {
     /*
      * given a series of lists, combine all items in all lists into one flattened list)
      */
-    this.buffer = lists.reduce((buf: T[], cl) => {
+    this.buffer = lists.reduce((buf: T[], cl: List<T>) => {
       buf = [...buf, ...(this.isList(cl) ? cl.buffer : [cl])] as T[];
       return buf;
     }, this.buffer);
     return this;
   }
 
-  filter(fn: (x: any) => boolean) {
+  filter(fn: (x: T) => boolean) {
     /*
      * given a predicate and a list, return the list of all items for which predicate(item) is True
      */
@@ -55,7 +55,7 @@ class List<T> {
     return this;
   }
 
-  map(fn: (x: any) => any) {
+  map(fn: (x: T) => T) {
     /*
      * given a function and a list, return the list of the results of applying function(item) on all items
      */
@@ -65,7 +65,7 @@ class List<T> {
 
   length() { return this.buffer.length; }
 
-  foldl(fn: (acc: any, x: any) => any, init: any) {
+  foldl(fn: (acc: T, x: T) => T, init: T) {
     /*
      * given a function, a list, and initial accumulator, fold (reduce) each item into the accumulator
      * from the left using function(accumulator, item)
@@ -73,7 +73,7 @@ class List<T> {
     return this.buffer.reduce(fn, init);
   }
 
-  foldr(fn: (acc: any, x: any) => any, init: any) {
+  foldr(fn: (acc: T, x: T) => T, init: T) {
     /*
      * given a function, a list, and an initial accumulator, fold (reduce) each item into the accumulator
      * from the right using function(item, accumulator)
@@ -104,7 +104,7 @@ class List<T> {
     return new List(buf);
   }
 
-  push(x: any): List<T> {
+  push(x: T): List<T> {
     this.buffer.push(x)
     return this;
   }
