@@ -2,7 +2,7 @@ import transform from './etl'
 
 describe('Transform', () => {
   it('transforms one value', () => {
-    const old: { [key: string]: string[] } = { 1: ['A'] }
+    const old: { [key: number]: string[] } = { 1: ['A'] }
     const expected: { [key: string]: number } = { a: 1 }
 
     expect(transform(old)).toEqual(expected)
